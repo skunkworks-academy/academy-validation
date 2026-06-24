@@ -1,0 +1,10 @@
+﻿[
+  {
+    "repo": "labs",
+    "requiredFiles": ["CNAME", "catalog/labs.json", "docs/architecture.md"]
+  },
+  {
+    "repo": "academy-portal",
+    "requiredFiles": ["index.html", "src/main.tsx", "docs/roles.md"]
+  }
+]

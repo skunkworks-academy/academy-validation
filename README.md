@@ -1,2 +1,3 @@
-# academy-validation
-Cross-site validation scripts for Skunkworks Academy repositories and domains.
+﻿# Skunkworks Academy Validation
+
+Shared QA checks for Skunkworks Academy repositories.
