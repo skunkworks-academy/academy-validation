@@ -1,0 +1,42 @@
+{
+  "version": "2026-07-04",
+  "canonicalAsset": "https://skunkworksacademy.com/assets/academy-navigation.js?v=2026.07.04",
+  "canonicalHeaderAttribute": "data-skunkworks-global-header",
+  "canonicalLogoLight": "https://raw.githubusercontent.com/skunkworks-academy/.github/refs/heads/main/images/favicon-black.png",
+  "canonicalLogoDark": "https://raw.githubusercontent.com/skunkworks-academy/.github/refs/heads/main/images/favicon-white.png",
+  "canonicalNavigation": [
+    { "label": "Home", "href": "https://skunkworksacademy.com/" },
+    { "label": "Self-paced", "href": "https://skunkworksacademy.com/self-paced/" },
+    { "label": "Portal", "href": "https://portal.skunkworksacademy.com/" },
+    { "label": "Labs", "href": "https://labs.skunkworksacademy.com/" },
+    { "label": "Plans", "href": "https://skunkworksacademy.com/pricing.index.html#pricing" },
+    { "label": "Purchase", "href": "https://skunkworksacademy.com/pricing.index.html#purchasing" }
+  ],
+  "allowedLocalHeaderSelectors": [
+    "data-skunkworks-global-header",
+    "academy-navigation.js",
+    "swa-has-global-nav"
+  ],
+  "blockedLocalHeaderPatterns": [
+    "<header",
+    "<nav",
+    "site-header",
+    "navbar",
+    "menu-toggle",
+    "nav-toggle",
+    "data-sk-nav",
+    "sk-topbar",
+    "brand-logo",
+    "logo-light",
+    "logo-dark"
+  ],
+  "ignoredPaths": [
+    "node_modules/",
+    ".git/",
+    "dist/",
+    "build/",
+    ".docusaurus/",
+    "coverage/",
+    "*.bak-*"
+  ]
+}
