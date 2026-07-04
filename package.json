@@ -1,8 +1,9 @@
-﻿{
+{
   "name": "academy-validation",
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "validate": "node scripts/validate-academy.mjs"
+    "validate": "node scripts/validate-academy.mjs",
+    "audit:global-nav": "node scripts/audit-global-navigation.mjs"
   }
 }
