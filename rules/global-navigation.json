@@ -1,20 +1,23 @@
 {
-  "version": "2026-07-04",
-  "canonicalAsset": "https://skunkworksacademy.com/assets/academy-navigation.js?v=2026.07.04",
+  "version": "2026-07-06.2",
+  "canonicalAsset": "https://skunkworksacademy.com/assets/academy-navigation.js?v=2026.07.06.2",
+  "canonicalUiAsset": "https://skunkworksacademy.com/assets/skunkworks-ui.js?v=2026.07.06.2",
   "canonicalHeaderAttribute": "data-skunkworks-global-header",
   "canonicalLogoLight": "https://raw.githubusercontent.com/skunkworks-academy/.github/refs/heads/main/images/favicon-black.png",
   "canonicalLogoDark": "https://raw.githubusercontent.com/skunkworks-academy/.github/refs/heads/main/images/favicon-white.png",
   "canonicalNavigation": [
     { "label": "Home", "href": "https://skunkworksacademy.com/" },
+    { "label": "Plans & Purchases", "href": "https://skunkworksacademy.com/plans-and-purchases/" },
+    { "label": "Secure Checkout", "href": "https://portal.skunkworksacademy.com/checkout/" },
     { "label": "Self-paced", "href": "https://skunkworksacademy.com/self-paced/" },
     { "label": "Portal", "href": "https://portal.skunkworksacademy.com/" },
-    { "label": "Labs", "href": "https://labs.skunkworksacademy.com/" },
-    { "label": "Plans", "href": "https://skunkworksacademy.com/pricing.index.html#pricing" },
-    { "label": "Purchase", "href": "https://skunkworksacademy.com/pricing.index.html#purchasing" }
+    { "label": "Labs", "href": "https://lab.skunkworksacademy.com/", "aliases": ["https://labs.skunkworksacademy.com/"] },
+    { "label": "Forms", "href": "https://skunkworksacademy.com/forms/" }
   ],
   "allowedLocalHeaderSelectors": [
     "data-skunkworks-global-header",
     "academy-navigation.js",
+    "skunkworks-ui.js",
     "swa-has-global-nav"
   ],
   "blockedLocalHeaderPatterns": [
