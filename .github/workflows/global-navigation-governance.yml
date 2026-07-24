@@ -1,0 +1,29 @@
+name: Global Navigation Governance
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-global-navigation:
+    name: Validate canonical navigation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validate shared rules
+        run: npm run validate
+
+      - name: Audit this repository
+        run: npm run audit:global-nav -- "$GITHUB_WORKSPACE"
