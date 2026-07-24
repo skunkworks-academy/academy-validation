@@ -1,0 +1,41 @@
+name: Enforce Skunkworks Academy Global Navigation
+
+on:
+  pull_request:
+    paths:
+      - '**/*.html'
+      - '**/*.htm'
+      - '**/*.js'
+      - '**/*.jsx'
+      - '**/*.mjs'
+      - '**/*.ts'
+      - '**/*.tsx'
+      - 'package.json'
+      - '.github/workflows/global-navigation.yml'
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  global-navigation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout website repository
+        uses: actions/checkout@v4
+
+      - name: Checkout Academy validation rules
+        uses: actions/checkout@v4
+        with:
+          repository: skunkworks-academy/academy-validation
+          path: .academy-validation
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Audit global navigation
+        run: node .academy-validation/scripts/audit-global-navigation.mjs "$GITHUB_WORKSPACE"
