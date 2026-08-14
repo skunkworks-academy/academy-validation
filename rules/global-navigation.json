@@ -1,24 +1,130 @@
 {
-  "version": "2026-07-06.2",
-  "canonicalAsset": "https://skunkworksacademy.com/assets/academy-navigation.js?v=2026.07.06.2",
-  "canonicalUiAsset": "https://skunkworksacademy.com/assets/skunkworks-ui.js?v=2026.07.06.2",
+  "version": "2026.08.14.1",
+  "canonicalAsset": "https://skunkworksacademy.com/assets/academy-navigation.js?v=2026.08.14.1",
+  "canonicalUiAsset": "https://skunkworksacademy.com/assets/skunkworks-ui.js?v=2026.08.14.1",
   "canonicalHeaderAttribute": "data-skunkworks-global-header",
-  "canonicalLogoLight": "https://raw.githubusercontent.com/skunkworks-academy/.github/refs/heads/main/images/favicon-black.png",
-  "canonicalLogoDark": "https://raw.githubusercontent.com/skunkworks-academy/.github/refs/heads/main/images/favicon-white.png",
+  "canonicalLogoLight": "https://skunkworksacademy.com/images/favicon-black.png?v=2026.08.14.1",
+  "canonicalLogoDark": "https://skunkworksacademy.com/images/favicon-white.png?v=2026.08.14.1",
+  "brand": "Skunkworks Academy",
+  "signInUrl": "https://portal.skunkworksacademy.com/",
+  "referenceLayout": {
+    "style": "compact-dark-reference",
+    "requiredControls": [
+      "menu",
+      "brand",
+      "centred-logo",
+      "search",
+      "sign-in"
+    ]
+  },
   "canonicalNavigation": [
-    { "label": "Home", "href": "https://skunkworksacademy.com/" },
-    { "label": "Plans & Purchases", "href": "https://skunkworksacademy.com/plans-and-purchases/" },
-    { "label": "Secure Checkout", "href": "https://portal.skunkworksacademy.com/checkout/" },
-    { "label": "Self-paced", "href": "https://skunkworksacademy.com/self-paced/" },
-    { "label": "Portal", "href": "https://portal.skunkworksacademy.com/" },
-    { "label": "Labs", "href": "https://lab.skunkworksacademy.com/", "aliases": ["https://labs.skunkworksacademy.com/"] },
-    { "label": "Forms", "href": "https://skunkworksacademy.com/forms/" }
+    {
+      "label": "Home",
+      "href": "https://skunkworksacademy.com/",
+      "domains": [
+        "skunkworksacademy.com",
+        "www.skunkworksacademy.com"
+      ]
+    },
+    {
+      "label": "Learning catalogue",
+      "href": "https://skunkworksacademy.com/catalogue/"
+    },
+    {
+      "label": "Plans & purchases",
+      "href": "https://skunkworksacademy.com/plans-and-purchases/"
+    },
+    {
+      "label": "Learner portal",
+      "href": "https://portal.skunkworksacademy.com/",
+      "domains": [
+        "portal.skunkworksacademy.com"
+      ]
+    },
+    {
+      "label": "Labs",
+      "href": "https://labs.skunkworksacademy.com/",
+      "domains": [
+        "labs.skunkworksacademy.com",
+        "lab.skunkworksacademy.com"
+      ]
+    },
+    {
+      "label": "Security",
+      "href": "https://security.skunkworksacademy.com/",
+      "domains": [
+        "security.skunkworksacademy.com"
+      ]
+    },
+    {
+      "label": "Microsoft learning",
+      "href": "https://microsoft.skunkworksacademy.com/",
+      "domains": [
+        "microsoft.skunkworksacademy.com"
+      ]
+    },
+    {
+      "label": "IBM learning",
+      "href": "https://ibm.skunkworksacademy.com/",
+      "domains": [
+        "ibm.skunkworksacademy.com"
+      ]
+    },
+    {
+      "label": "Badging",
+      "href": "https://badging.skunkworksacademy.com/",
+      "domains": [
+        "badging.skunkworksacademy.com",
+        "badge-hub.skunkworksacademy.com"
+      ]
+    },
+    {
+      "label": "Jobs",
+      "href": "https://jobs.skunkworksacademy.com/",
+      "domains": [
+        "jobs.skunkworksacademy.com"
+      ]
+    },
+    {
+      "label": "Forms",
+      "href": "https://skunkworksacademy.com/forms/"
+    },
+    {
+      "label": "Connections",
+      "href": "https://portal.skunkworksacademy.com/connections/"
+    },
+    {
+      "label": "Reports",
+      "href": "https://portal.skunkworksacademy.com/reports/"
+    },
+    {
+      "label": "Docs",
+      "href": "https://docs.skunkworksacademy.com/",
+      "domains": [
+        "docs.skunkworksacademy.com"
+      ]
+    },
+    {
+      "label": "Publish",
+      "href": "https://publish.skunkworksacademy.com/",
+      "domains": [
+        "publish.skunkworksacademy.com"
+      ]
+    },
+    {
+      "label": "Blog",
+      "href": "https://blog.skunkworksacademy.com/",
+      "domains": [
+        "blog.skunkworksacademy.com"
+      ]
+    }
   ],
   "allowedLocalHeaderSelectors": [
     "data-skunkworks-global-header",
     "academy-navigation.js",
     "skunkworks-ui.js",
-    "swa-has-global-nav"
+    "swa-has-global-nav",
+    "data-sk-global-nav"
   ],
   "blockedLocalHeaderPatterns": [
     "<header",
