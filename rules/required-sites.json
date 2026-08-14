@@ -1,4 +1,4 @@
-﻿[
+[
   {
     "repo": "labs",
     "requiredFiles": ["CNAME", "catalog/labs.json", "docs/architecture.md"]
