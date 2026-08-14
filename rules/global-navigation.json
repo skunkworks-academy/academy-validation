@@ -1,10 +1,10 @@
 {
-  "version": "2026.08.14.1",
-  "canonicalAsset": "https://skunkworksacademy.com/assets/academy-navigation.js?v=2026.08.14.1",
-  "canonicalUiAsset": "https://skunkworksacademy.com/assets/skunkworks-ui.js?v=2026.08.14.1",
+  "version": "2026.08.14.2",
+  "canonicalAsset": "https://skunkworksacademy.com/assets/academy-navigation.js?v=2026.08.14.2",
+  "canonicalUiAsset": "https://skunkworksacademy.com/assets/skunkworks-ui.js?v=2026.08.14.2",
   "canonicalHeaderAttribute": "data-skunkworks-global-header",
-  "canonicalLogoLight": "https://skunkworksacademy.com/images/favicon-black.png?v=2026.08.14.1",
-  "canonicalLogoDark": "https://skunkworksacademy.com/images/favicon-white.png?v=2026.08.14.1",
+  "canonicalLogoLight": "https://skunkworksacademy.com/images/favicon-black.png?v=2026.08.14.2",
+  "canonicalLogoDark": "https://skunkworksacademy.com/images/favicon-white.png?v=2026.08.14.2",
   "brand": "Skunkworks Academy",
   "signInUrl": "https://portal.skunkworksacademy.com/",
   "referenceLayout": {
@@ -147,5 +147,9 @@
     ".docusaurus/",
     "coverage/",
     "*.bak-*"
-  ]
+  ],
+  "accountIntegration": {
+    "global": "SKUNKWORKS_ACADEMY_NAV_ACCOUNT",
+    "event": "skunkworksacademy:account-change"
+  }
 }
