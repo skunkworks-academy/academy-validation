@@ -29,7 +29,7 @@ function walk(dir) {
   return files;
 }
 
-function containsAny(content, patterns) {
+function containsAny(content, patterns = []) {
   return patterns.some((pattern) => content.includes(pattern));
 }
 
@@ -38,28 +38,45 @@ for (const file of walk(workspace)) {
   const content = readFileSync(file, 'utf8');
   const looksLikePage = /\.(html|htm|tsx|jsx)$/i.test(rel);
   const hasLocalHeader = containsAny(content, rules.blockedLocalHeaderPatterns);
+  const hasLocalFooter = containsAny(content, rules.blockedLocalFooterPatterns);
   const referencesCanonicalAsset = content.includes('academy-navigation.js');
+  const referencesCanonicalUi = content.includes('skunkworks-ui.js');
+  const referencesCanonicalFooter = content.includes('skunkworks-footer.js');
   const hasCanonicalHeader = content.includes(rules.canonicalHeaderAttribute);
   const hasCompatibilityClass = content.includes('swa-has-global-nav');
+  const hasCanonicalFooter = content.includes(rules.canonicalFooterAttribute) || content.includes('swa-global-footer');
+  const preservesFooter = content.includes('data-sk-preserve-footer');
 
   if (looksLikePage && hasLocalHeader && !referencesCanonicalAsset && !hasCanonicalHeader && !hasCompatibilityClass) {
     failures.push(`${rel}: local header/navigation detected without canonical global navigation reference.`);
   }
 
-  if (referencesCanonicalAsset && !content.includes('2026.07.04')) {
-    warnings.push(`${rel}: canonical navigation asset referenced without current cache key v=2026.07.04.`);
+  if (looksLikePage && hasLocalFooter && !referencesCanonicalAsset && !referencesCanonicalFooter && !hasCanonicalFooter && !preservesFooter) {
+    failures.push(`${rel}: local public footer detected without canonical global footer reference.`);
+  }
+
+  if (looksLikePage && referencesCanonicalUi && !referencesCanonicalAsset && !referencesCanonicalFooter && !hasCanonicalFooter) {
+    failures.push(`${rel}: canonical UI is loaded directly without the canonical footer. Use academy-navigation.js or add skunkworks-footer.js.`);
+  }
+
+  if (referencesCanonicalAsset && !content.includes(rules.version)) {
+    warnings.push(`${rel}: canonical navigation asset referenced without current cache key v=${rules.version}.`);
+  }
+
+  if (referencesCanonicalFooter && !content.includes(rules.version)) {
+    warnings.push(`${rel}: canonical footer asset referenced without current cache key v=${rules.version}.`);
   }
 }
 
 if (warnings.length) {
-  console.warn('Global navigation audit warnings:\n');
+  console.warn('Global shell audit warnings:\n');
   for (const warning of warnings) console.warn(`- ${warning}`);
 }
 
 if (failures.length) {
-  console.error('Global navigation audit failed:\n');
+  console.error('Global shell audit failed:\n');
   for (const failure of failures) console.error(`- ${failure}`);
   process.exit(1);
 }
 
-console.log('Global navigation audit passed.');
+console.log('Global navigation and footer audit passed.');
