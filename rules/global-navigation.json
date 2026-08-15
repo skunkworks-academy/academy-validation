@@ -1,20 +1,27 @@
 {
-  "version": "2026.08.14.2",
-  "canonicalAsset": "https://skunkworksacademy.com/assets/academy-navigation.js?v=2026.08.14.2",
-  "canonicalUiAsset": "https://skunkworksacademy.com/assets/skunkworks-ui.js?v=2026.08.14.2",
+  "version": "2026.08.15.1",
+  "canonicalAsset": "https://skunkworksacademy.com/assets/academy-navigation.js?v=2026.08.15.1",
+  "canonicalUiAsset": "https://skunkworksacademy.com/assets/skunkworks-ui.js?v=2026.08.15.1",
+  "canonicalFooterAsset": "https://skunkworksacademy.com/assets/skunkworks-footer.js?v=2026.08.15.1",
   "canonicalHeaderAttribute": "data-skunkworks-global-header",
-  "canonicalLogoLight": "https://skunkworksacademy.com/images/favicon-black.png?v=2026.08.14.2",
-  "canonicalLogoDark": "https://skunkworksacademy.com/images/favicon-white.png?v=2026.08.14.2",
+  "canonicalFooterAttribute": "data-skunkworks-global-footer",
+  "canonicalLogoLight": "https://skunkworksacademy.com/images/favicon-black.png?v=2026.08.15.1",
+  "canonicalLogoDark": "https://skunkworksacademy.com/images/favicon-white.png?v=2026.08.15.1",
   "brand": "Skunkworks Academy",
   "signInUrl": "https://portal.skunkworksacademy.com/",
   "referenceLayout": {
-    "style": "compact-dark-reference",
+    "style": "compact-dark-header-microsoft-inspired-footer",
     "requiredControls": [
       "menu",
       "brand",
       "centred-logo",
       "search",
-      "sign-in"
+      "sign-in",
+      "locale",
+      "privacy-choices",
+      "theme",
+      "legal-links",
+      "copyright"
     ]
   },
   "canonicalNavigation": [
@@ -126,6 +133,12 @@
     "swa-has-global-nav",
     "data-sk-global-nav"
   ],
+  "allowedLocalFooterSelectors": [
+    "data-skunkworks-global-footer",
+    "skunkworks-footer.js",
+    "swa-global-footer",
+    "data-sk-preserve-footer"
+  ],
   "blockedLocalHeaderPatterns": [
     "<header",
     "<nav",
@@ -138,6 +151,12 @@
     "brand-logo",
     "logo-light",
     "logo-dark"
+  ],
+  "blockedLocalFooterPatterns": [
+    "<footer",
+    "site-footer",
+    "legal-footer",
+    "footer-links"
   ],
   "ignoredPaths": [
     "node_modules/",
