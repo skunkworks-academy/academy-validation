@@ -10,11 +10,12 @@
   "brand": "Skunkworks Academy",
   "signInUrl": "https://portal.skunkworksacademy.com/",
   "referenceLayout": {
-    "style": "compact-dark-header-microsoft-inspired-footer",
+    "style": "compact-dark-header-with-persistent-top-menu-microsoft-inspired-footer",
     "requiredControls": [
       "menu",
       "brand",
       "centred-logo",
+      "top-menu",
       "search",
       "sign-in",
       "locale",
@@ -128,9 +129,11 @@
   ],
   "allowedLocalHeaderSelectors": [
     "data-skunkworks-global-header",
+    "data-skunkworks-top-menu",
     "academy-navigation.js",
     "skunkworks-ui.js",
     "swa-has-global-nav",
+    "swa-has-top-menu",
     "data-sk-global-nav"
   ],
   "allowedLocalFooterSelectors": [
