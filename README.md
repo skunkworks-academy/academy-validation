@@ -11,20 +11,26 @@ npm run audit:global-nav -- /path/to/repo-or-organisation-checkout
 
 ## Mandatory global navigation rule
 
-Every public Skunkworks Academy website, application shell and generated page must load the central navigation asset:
+Every public Skunkworks Academy website, application shell and generated standalone page must load the central v10 navigation asset:
 
 ```html
-<script defer src="https://skunkworksacademy.com/assets/academy-navigation.js?v=2026.07.17.6"></script>
+<script defer src="https://skunkworksacademy.com/assets/academy-navigation.js?v=2026.08.15.1" data-skunkworks-global-nav="v10"></script>
 ```
 
 The central asset owns:
 
-- the organisation-wide top menu and mobile burger behaviour;
+- the organisation-wide canonical header;
+- a persistent desktop top-menu navigation row on every public page;
+- mobile/tablet burger-menu behaviour when the persistent row is collapsed;
 - the Skunkworks Academy logo icon, including light and dark variants;
 - navigation labels, destination URLs, active-page state and responsive styling;
-- removal or reconciliation of legacy duplicate top-level navigation.
+- canonical search and sign-in controls;
+- removal or reconciliation of legacy duplicate top-level navigation;
+- loading of the canonical footer and public design system.
 
-Repositories must not introduce independent top-level header navigation, navbar markup, logo-switching logic or burger-menu implementations. Product-specific secondary navigation is allowed beneath the canonical global bar when it is clearly scoped to the current application.
+The persistent top menu currently exposes the highest-frequency public destinations directly: Home, Catalogue, Labs, Microsoft, IBM, Security, Badging, Jobs and Blog. The full destination set remains available through the canonical menu/search controls.
+
+Repositories must not introduce independent top-level header navigation, navbar markup, logo-switching logic or burger-menu implementations. Product-specific secondary navigation is allowed beneath the canonical global bar when it is clearly scoped to the current application. Intentionally local authenticated application chrome may be preserved only where the public-shell preservation contract permits it.
 
 ## Required consumer workflow
 
