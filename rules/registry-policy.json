@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "policyId": "SKW-PLATFORM-REGISTRY-001",
+  "authority": {
+    "containerRegistry": "ghcr.io",
+    "namespaceExpression": "${{ github.repository_owner }}",
+    "repositoryImageExpression": "ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}",
+    "authentication": [
+      "${{ secrets.GITHUB_TOKEN }}",
+      "${{ secrets.ORG_PACKAGE_REGISTRY_PAT }}"
+    ]
+  },
+  "artifactTargets": {
+    "containers": "ghcr.io/${owner}/${repository}:${tag}",
+    "helmOci": "oci://ghcr.io/${owner}/${repository}",
+    "genericOciArtifacts": "ghcr.io/${owner}/${repository}:${artifact-tag}",
+    "npm": "https://npm.pkg.github.com",
+    "maven": "https://maven.pkg.github.com/${owner}/${repository}",
+    "nuget": "https://nuget.pkg.github.com/${owner}/index.json"
+  },
+  "tagging": {
+    "immutable": "${{ github.sha }}",
+    "moving": "latest",
+    "requiredLowercaseRepositoryPath": true,
+    "deploymentPreference": "digest"
+  },
+  "allowedRegistryHosts": [
+    "ghcr.io",
+    "npm.pkg.github.com",
+    "maven.pkg.github.com",
+    "nuget.pkg.github.com"
+  ],
+  "forbiddenRegistryHosts": [
+    "docker.io",
+    "index.docker.io",
+    "registry-1.docker.io",
+    "quay.io",
+    "gcr.io",
+    "pkg.dev",
+    "azurecr.io",
+    "registry.gitlab.com",
+    "amazonaws.com"
+  ],
+  "legacySecretNames": [
+    "DOCKER_HUB_TOKEN",
+    "DOCKERHUB_TOKEN",
+    "DOCKERHUB_USERNAME",
+    "ECR_REGISTRY",
+    "ECR_REPOSITORY",
+    "AWS_ACCESS_KEY_ID",
+    "AWS_SECRET_ACCESS_KEY",
+    "GCP_ARTIFACT_REGISTRY_KEY",
+    "GOOGLE_APPLICATION_CREDENTIALS",
+    "ACR_USERNAME",
+    "ACR_PASSWORD",
+    "NEXUS_USERNAME",
+    "NEXUS_PASSWORD",
+    "ARTIFACTORY_USERNAME",
+    "ARTIFACTORY_PASSWORD"
+  ],
+  "exceptions": {
+    "dependencyDownloads": "Public dependency registries may be used as read-only upstream sources unless an environment-specific mirror policy requires otherwise.",
+    "languagePackageProtocol": "npm, Maven and NuGet publishing use the protocol-specific GitHub Packages endpoints because those protocols do not publish to ghcr.io directly.",
+    "localOverride": "A repository may only override this policy through an approved, documented platform architecture decision record and an explicit allow-list entry in this policy."
+  }
+}
