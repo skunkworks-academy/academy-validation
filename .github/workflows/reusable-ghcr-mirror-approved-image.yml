@@ -73,13 +73,13 @@ jobs:
         shell: bash
         env:
           SOURCE_IMAGE: ${{ steps.meta.outputs.source_image }}
-          TARGET_IMAGE: ${{ steps.meta.outputs.image }}
+          TARGET_TAG: ${{ inputs.target_tag }}
         run: |
           set -euo pipefail
           docker pull "$SOURCE_IMAGE"
           SOURCE_DIGEST="$(docker image inspect "$SOURCE_IMAGE" --format '{{index .RepoDigests 0}}' 2>/dev/null || true)"
-          docker tag "$SOURCE_IMAGE" "$TARGET_IMAGE"
-          docker push "$TARGET_IMAGE"
+          docker tag "$SOURCE_IMAGE" "ghcr.io/${GITHUB_REPOSITORY,,}:${TARGET_TAG}"
+          docker push "ghcr.io/${GITHUB_REPOSITORY,,}:${TARGET_TAG}"
           echo "source_digest=$SOURCE_DIGEST" >> "$GITHUB_OUTPUT"
           echo "Source digest: ${SOURCE_DIGEST:-unavailable}" >> "$GITHUB_STEP_SUMMARY"
 
