@@ -1,0 +1,59 @@
+name: Organization Artifact Registry Audit
+
+on:
+  schedule:
+    - cron: '37 2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  ORG_NAME: skunkworks-academy
+
+jobs:
+  audit-organization:
+    name: Audit all organization repositories
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GH_TOKEN: ${{ secrets.ORG_PACKAGE_REGISTRY_PAT }}
+    steps:
+      - name: Checkout validation control plane
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Verify organization audit credential
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "${GH_TOKEN:-}" ]; then
+            echo "ORG_PACKAGE_REGISTRY_PAT is required for complete public/private organization coverage." >&2
+            echo "Grant read access to organization metadata and repository contents for every repository in scope." >&2
+            exit 2
+          fi
+          gh api "/orgs/${ORG_NAME}" --jq '.login'
+
+      - name: Audit organization artifact targets
+        run: node scripts/audit-organization-registries.mjs --org "$ORG_NAME"
+
+      - name: Publish organization audit summary
+        if: always()
+        shell: bash
+        run: |
+          if [ -f artifacts/organization-registry-audit/organization-registry-audit.md ]; then
+            cat artifacts/organization-registry-audit/organization-registry-audit.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload organization audit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: organization-registry-audit-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifacts/organization-registry-audit/
+          if-no-files-found: warn
+          retention-days: 90
