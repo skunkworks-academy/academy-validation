@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "repository": "skunkworks-academy/example-service",
+  "commit": "0123456789abcdef0123456789abcdef01234567",
+  "artifact": {
+    "image": "ghcr.io/skunkworks-academy/example-service",
+    "digest": "sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+    "immutableTag": "0123456789abcdef0123456789abcdef01234567",
+    "sbom": "ghcr-attestation",
+    "provenance": "github-attestation"
+  },
+  "promotion": {
+    "environment": "staging",
+    "sourceEnvironment": "test",
+    "approvedBy": "release-owner",
+    "approvedAt": "2026-08-20T00:00:00Z"
+  }
+}
