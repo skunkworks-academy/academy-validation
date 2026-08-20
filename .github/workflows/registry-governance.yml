@@ -1,0 +1,59 @@
+name: Authoritative Registry Governance
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '30 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: read
+
+concurrency:
+  group: registry-governance-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-registry-policy:
+    name: Validate registry targets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Audit registry targets
+        run: npm run audit:registry
+
+      - name: Upload registry audit reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: registry-audit-${{ github.run_id }}
+          path: |
+            registry-audit.json
+            registry-audit.md
+          if-no-files-found: warn
+          retention-days: 30
+
+  organization-audit-guidance:
+    name: Verify organization audit credential readiness
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify cross-repository credential configuration
+        env:
+          ORG_PACKAGE_REGISTRY_PAT: ${{ secrets.ORG_PACKAGE_REGISTRY_PAT }}
+        run: |
+          if [ -z "$ORG_PACKAGE_REGISTRY_PAT" ]; then
+            echo "::warning::ORG_PACKAGE_REGISTRY_PAT is not configured. Repository-local policy enforcement remains active, but private cross-repository inventory requires an organization-scoped token or GitHub App credential with contents:read and packages:read."
+          else
+            echo "Organization-scoped registry credential is configured."
+          fi

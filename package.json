@@ -1,9 +1,11 @@
 {
   "name": "academy-validation",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "scripts": {
-    "validate": "node scripts/validate-academy.mjs",
-    "audit:global-nav": "node scripts/audit-global-navigation.mjs"
+    "validate:academy": "node scripts/validate-academy.mjs",
+    "audit:global-nav": "node scripts/audit-global-navigation.mjs",
+    "audit:registry": "node scripts/audit-registry-targets.mjs .",
+    "validate": "npm run validate:academy && npm run audit:registry"
   }
 }
