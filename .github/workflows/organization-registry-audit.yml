@@ -41,12 +41,26 @@ jobs:
       - name: Audit organization artifact targets
         run: node scripts/audit-organization-registries.mjs --org "$ORG_NAME"
 
+      - name: Generate registry migration matrix
+        if: always()
+        shell: bash
+        run: |
+          if [ -f artifacts/organization-registry-audit/organization-registry-audit.json ]; then
+            node scripts/generate-registry-migration-matrix.mjs
+          else
+            echo "Organization audit JSON was not generated; migration matrix cannot be produced." >&2
+          fi
+
       - name: Publish organization audit summary
         if: always()
         shell: bash
         run: |
           if [ -f artifacts/organization-registry-audit/organization-registry-audit.md ]; then
             cat artifacts/organization-registry-audit/organization-registry-audit.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ -f artifacts/organization-registry-audit/organization-registry-migration-matrix.md ]; then
+            printf '\n\n---\n\n' >> "$GITHUB_STEP_SUMMARY"
+            cat artifacts/organization-registry-audit/organization-registry-migration-matrix.md >> "$GITHUB_STEP_SUMMARY"
           fi
 
       - name: Upload organization audit evidence
