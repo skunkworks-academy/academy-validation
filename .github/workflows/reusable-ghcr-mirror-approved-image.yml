@@ -1,0 +1,93 @@
+name: Reusable GHCR Approved Image Mirror
+
+on:
+  workflow_call:
+    inputs:
+      source_key:
+        description: Approved source key from rules/approved-upstream-images.json
+        required: true
+        type: string
+      target_tag:
+        description: Repository-local GHCR tag to publish
+        required: true
+        type: string
+    secrets:
+      ORG_PACKAGE_REGISTRY_PAT:
+        required: false
+    outputs:
+      image:
+        description: Repository-local GHCR image reference
+        value: ${{ jobs.mirror.outputs.image }}
+      source_digest:
+        description: Upstream RepoDigest captured after pull when available
+        value: ${{ jobs.mirror.outputs.source_digest }}
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  mirror:
+    name: Mirror approved upstream image
+    runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.meta.outputs.image }}
+      source_digest: ${{ steps.mirror.outputs.source_digest }}
+    steps:
+      - name: Checkout registry control plane
+        uses: actions/checkout@v4
+        with:
+          repository: skunkworks-academy/academy-validation
+          ref: main
+          path: .academy-validation
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Resolve approved source and target
+        id: meta
+        shell: bash
+        env:
+          SOURCE_KEY: ${{ inputs.source_key }}
+          TARGET_TAG: ${{ inputs.target_tag }}
+        run: |
+          set -euo pipefail
+          SOURCE_IMAGE="$(node .academy-validation/scripts/resolve-approved-upstream-image.mjs "$SOURCE_KEY")"
+          IMAGE="ghcr.io/${GITHUB_REPOSITORY,,}:${TARGET_TAG}"
+          echo "source_image=$SOURCE_IMAGE" >> "$GITHUB_OUTPUT"
+          echo "image=$IMAGE" >> "$GITHUB_OUTPUT"
+          echo "Approved source key: $SOURCE_KEY" >> "$GITHUB_STEP_SUMMARY"
+          echo "Target: $IMAGE" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.ORG_PACKAGE_REGISTRY_PAT != '' && secrets.ORG_PACKAGE_REGISTRY_PAT || github.token }}
+
+      - name: Mirror approved image
+        id: mirror
+        shell: bash
+        env:
+          SOURCE_IMAGE: ${{ steps.meta.outputs.source_image }}
+          TARGET_IMAGE: ${{ steps.meta.outputs.image }}
+        run: |
+          set -euo pipefail
+          docker pull "$SOURCE_IMAGE"
+          SOURCE_DIGEST="$(docker image inspect "$SOURCE_IMAGE" --format '{{index .RepoDigests 0}}' 2>/dev/null || true)"
+          docker tag "$SOURCE_IMAGE" "$TARGET_IMAGE"
+          docker push "$TARGET_IMAGE"
+          echo "source_digest=$SOURCE_DIGEST" >> "$GITHUB_OUTPUT"
+          echo "Source digest: ${SOURCE_DIGEST:-unavailable}" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Verify mirrored image is pullable
+        shell: bash
+        env:
+          TARGET_IMAGE: ${{ steps.meta.outputs.image }}
+        run: |
+          set -euo pipefail
+          docker buildx imagetools inspect "$TARGET_IMAGE"
+          docker pull "$TARGET_IMAGE"
