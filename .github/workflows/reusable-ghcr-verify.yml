@@ -1,0 +1,61 @@
+name: Reusable GHCR Pull Verification
+
+on:
+  workflow_call:
+    inputs:
+      image:
+        description: Canonical image name, e.g. ghcr.io/org/repo
+        required: true
+        type: string
+      digest:
+        description: Immutable sha256 digest
+        required: true
+        type: string
+    secrets:
+      ORG_PACKAGE_REGISTRY_PAT:
+        required: false
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  verify-pull:
+    name: Verify GHCR pull readiness
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate coordinates
+        shell: bash
+        env:
+          IMAGE: ${{ inputs.image }}
+          DIGEST: ${{ inputs.digest }}
+        run: |
+          set -euo pipefail
+          [[ "$IMAGE" == ghcr.io/* ]] || { echo "Image must use ghcr.io" >&2; exit 1; }
+          [[ "$DIGEST" =~ ^sha256:[0-9a-f]{64}$ ]] || { echo "Digest must be sha256:<64 hex>" >&2; exit 1; }
+
+      - name: Log in to Authoritative Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.ORG_PACKAGE_REGISTRY_PAT != '' && secrets.ORG_PACKAGE_REGISTRY_PAT || github.token }}
+
+      - name: Verify manifest exists
+        shell: bash
+        run: docker buildx imagetools inspect "${{ inputs.image }}@${{ inputs.digest }}"
+
+      - name: Verify runtime pull
+        shell: bash
+        run: docker pull "${{ inputs.image }}@${{ inputs.digest }}"
+
+      - name: Record verification
+        shell: bash
+        run: |
+          {
+            echo '## GHCR pull verification'
+            echo ''
+            echo '- Image: `${{ inputs.image }}`'
+            echo '- Digest: `${{ inputs.digest }}`'
+            echo '- Result: **PASS**'
+          } >> "$GITHUB_STEP_SUMMARY"
