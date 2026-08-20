@@ -1,0 +1,32 @@
+name: Build and Publish Container
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - Dockerfile
+      - '**/Dockerfile'
+      - 'docker/**'
+      - 'container/**'
+      - '.github/workflows/build-container.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+  attestations: write
+  id-token: write
+
+jobs:
+  registry-governance:
+    uses: skunkworks-academy/academy-validation/.github/workflows/reusable-registry-governance.yml@main
+
+  build-publish:
+    needs: registry-governance
+    uses: skunkworks-academy/academy-validation/.github/workflows/reusable-ghcr-build-publish.yml@main
+    with:
+      context: .
+      dockerfile: ./Dockerfile
+      platforms: linux/amd64
+      publish_latest: true
+    secrets: inherit

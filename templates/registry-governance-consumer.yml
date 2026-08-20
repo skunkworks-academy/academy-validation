@@ -11,34 +11,4 @@ permissions:
 
 jobs:
   registry-governance:
-    name: Validate authoritative registry policy
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Checkout Academy validation rules
-        uses: actions/checkout@v4
-        with:
-          repository: skunkworks-academy/academy-validation
-          ref: main
-          path: .academy-validation
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Audit repository registry targets
-        run: node .academy-validation/scripts/audit-registry-targets.mjs "$GITHUB_WORKSPACE"
-
-      - name: Upload registry audit
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: registry-audit-${{ github.run_id }}
-          path: |
-            registry-audit.json
-            registry-audit.md
-          if-no-files-found: warn
-          retention-days: 14
+    uses: skunkworks-academy/academy-validation/.github/workflows/reusable-registry-governance.yml@main
