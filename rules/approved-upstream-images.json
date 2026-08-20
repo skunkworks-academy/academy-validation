@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "description": "Allowlist of upstream images permitted for controlled ingress mirroring into repository-local GHCR packages. Consumers reference only sourceKey values; direct upstream registry references remain prohibited in deployment and build configuration.",
+  "images": {
+    "node-20-alpine": "node:20-alpine",
+    "node-18-alpine": "node:18-alpine",
+    "python-3.12-slim": "python:3.12-slim",
+    "python-3.11-slim": "python:3.11-slim",
+    "postgres-15-alpine": "postgres:15-alpine",
+    "nginx-stable-alpine": "nginx:stable-alpine",
+    "ubuntu-latest": "ubuntu:latest",
+    "jenkins-gurubaba-latest": "gurubaba/jenkins:latest",
+    "rancher-local-path-provisioner-v0.0.30": "rancher/local-path-provisioner:v0.0.30",
+    "prometheus-busybox-latest": "quay.io/prometheus/busybox:latest",
+    "k8s-nfs-subdir-external-provisioner-v4.0.2": "registry.k8s.io/sig-storage/nfs-subdir-external-provisioner:v4.0.2",
+    "k8s-volume-nfs-0.8": "registry.k8s.io/volume-nfs:0.8"
+  }
+}
