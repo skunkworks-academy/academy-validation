@@ -20,6 +20,14 @@ jobs:
         with:
           source: ./
           destination: ./_site
+      - name: Restore runner ownership after Jekyll container build
+        # jekyll-build-pages can leave its generated output owned by root.
+        # Only the checked-out build artifact is changed; no repo files or secrets.
+        run: |
+          set -euo pipefail
+          test -d _site
+          sudo chown -R "$(id -u):$(id -g)" _site
+          test -w _site/images
       - name: Install and verify Academy search favicons
         uses: skunkworks-academy/www/.github/actions/search-favicons@070f621875577a66ae43cdffa7e9d20c65efdc71
         with:
