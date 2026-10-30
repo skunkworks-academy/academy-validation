@@ -36,7 +36,23 @@ jobs:
             echo "Grant read access to organization metadata and repository contents for every repository in scope." >&2
             exit 2
           fi
-          gh api "/orgs/${ORG_NAME}" --jq '.login'
+          # An expiring/invalid PAT must fail closed: do not fall back to the
+          # repository-scoped GITHUB_TOKEN, which cannot audit private org repos.
+          if ! gh api /user --jq '.login' > /dev/null; then
+            echo "::error title=Invalid organization audit credential::ORG_PACKAGE_REGISTRY_PAT is expired, revoked or invalid (GitHub returned 401). Rotate the secret using a scoped, approved GitHub token with read access to all organisation repositories and packages." >&2
+            echo "### Organisation registry audit blocked" >> "$GITHUB_STEP_SUMMARY"
+            echo "The configured \`ORG_PACKAGE_REGISTRY_PAT\` is rejected by GitHub. Audit was not executed and coverage is **unknown**. An organisation administrator must rotate the token, then rerun this workflow." >> "$GITHUB_STEP_SUMMARY"
+            exit 2
+          fi
+          if ! gh api "/orgs/${ORG_NAME}" --jq '.login' > /dev/null; then
+            echo "::error title=Insufficient organisation access::Audit token cannot read the target organisation. Check organisation approval and token scope." >&2
+            exit 2
+          fi
+          if ! gh api --paginate "/orgs/${ORG_NAME}/repos?type=all&per_page=100" --jq '.[].full_name' | grep -Fxq "${ORG_NAME}/academy-validation"; then
+            echo "::error title=Incomplete organisation repository coverage::Token cannot enumerate required organisation repositories. Review installation/SSO authorisation and permissions." >&2
+            exit 2
+          fi
+          echo "Authenticated token and organisation access verified. Full registry audit will now run." >> "$GITHUB_STEP_SUMMARY"
 
       - name: Audit organization artifact targets
         run: node scripts/audit-organization-registries.mjs --org "$ORG_NAME"
